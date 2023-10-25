@@ -9,7 +9,7 @@ data = sock.recv(4096)
 print(data.decode('utf-8'))
 
 while True:
-    message = input("Envía un mensaje: ")
+    message = input("Envía un mensaje: ") #TODO: Que diferencie los usuarios, los cuales pueden estar guardados en una base de datos o más simple, en un archivo de texto.
     message += "\n"  # Agrega un salto de línea al final del mensaje
     sock.send(message.encode('utf-8'))
     if message == "quit\n":
