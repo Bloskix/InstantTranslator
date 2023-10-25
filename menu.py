@@ -1,4 +1,5 @@
 from googletrans import Translator
+from time import sleep
 from translator import chat
 from constants import *
 
@@ -32,8 +33,11 @@ def main():
         elif choice == "2":
             user2_language = input(f"¿Qué idioma hablas? (es/en/fr/de): ")
         elif choice == "3":
+            clear_screen()
             print(f"Iniciando chat con idioma de Usuario 1: {user1_language}")
             print(f"Iniciando chat con idioma de Usuario 2: {user2_language}")
+            sleep(2)
+            clear_screen()
             chat()
         elif choice == "4":
             print("Gracias por usar Instant Translator. ¡Hasta luego!")
