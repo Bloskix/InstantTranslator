@@ -16,7 +16,7 @@ print("Socket vinculado")
 sock.listen(2)
 print("Socket ahora escuchando")
 
-clientes = {}
+clients = {}
 
 def worker(*args):
     conn = args[0]
@@ -24,15 +24,15 @@ def worker(*args):
     try:
         print('Conexión con {}.'.format(addr))
         conn.send("Servidor: Hola cliente".encode('UTF-8'))
-        id_cliente = threading.current_thread().getName() # Obtiene el nombre del hilo actual
-        clientes[id_cliente] = conn # Agrega el socket conectado a la lista de clientes
+        id_clients = threading.current_thread().getName() # Obtiene el nombre del hilo actual
+        clients[id_clients] = conn # Agrega el socket conectado a la lista de clientes
         while True:
-            datos = conn.recv(4096)
-            if datos:
-                print('Recibido de {}: {}'.format(id_cliente, datos.decode('utf-8')))
-                for id_cliente_destino, cliente_destino in clientes.items():
-                    if id_cliente_destino != id_cliente: # No envía el mensaje al cliente que lo envió
-                        cliente_destino.send(datos)
+            data = conn.recv(4096)
+            if data:
+                print('Recibido de {}: {}'.format(id_clients, data.decode('utf-8')))
+                for id_clients_destino, cliente_destino in clients.items():
+                    if id_clients_destino != id_clients: # No envía el mensaje al cliente que lo envió
+                        cliente_destino.send(data)
             else:
                 print("Prueba")
                 break

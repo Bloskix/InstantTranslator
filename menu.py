@@ -14,7 +14,7 @@ def main():
     user2_language = "en"
 
     while True:
-        CLIENTE = print(input("¡Bienvenido a Instant Translator!\nIngresa tu nombre para continuar: "))
+        CLIENT = print(input("¡Bienvenido a Instant Translator!\nIngresa tu nombre para continuar: "))
         display_menu()
         choice = input("Seleccione una opción: ")
 

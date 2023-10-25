@@ -9,10 +9,10 @@ data = sock.recv(4096)
 print(data.decode('utf-8'))
 
 while True:
-    mensaje = input("Envía un mensaje: ")
-    mensaje += "\n"  # Agrega un salto de línea al final del mensaje
-    sock.send(mensaje.encode('utf-8'))
-    if mensaje == "quit\n":
+    message = input("Envía un mensaje: ")
+    message += "\n"  # Agrega un salto de línea al final del mensaje
+    sock.send(message.encode('utf-8'))
+    if message == "quit\n":
         break
 print("Adiós")
 sock.close()
