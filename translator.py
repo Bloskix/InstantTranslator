@@ -1,24 +1,17 @@
-from googletrans import Translator
+from mtranslate import translate
 
-def chat():
-    translator = Translator()
-    language_user1 = "es"  #TODO: Que el usuario elija su lenguaje, no hard codeado.
-    language_user2 = "en" 
-
+def chat(username, user1_language, user2_language):
     while True:
-        message_user1 = input(f"Usuario 1: ({language_user1} -> {language_user2}): ") #TODO: Que se detecte cuando el usuario está escribiendo con keychar.
-        if language_user1 != language_user2:
-            translated_message = translator.translate(message_user1, dest=language_user2)
-            print(f"Mensaje traducido al usuario 2: {translated_message.text}")
+        message_user1 = input(f"{username}: ({user1_language} -> {user2_language}): ")
+        if user1_language != user2_language:
+            translated_message = translate(message_user1, to_language=user2_language)
+            print(f"Mensaje traducido al usuario 2: {translated_message}")
         else:
-            print("Usuario 2: " + message_user1) #TODO: Ver cosas como que pasa si los dos usuarios tienen el mismo idioma (que no traduzca) o que pasa si no se escribe nada.
+            print("Usuario 2: " + message_user1)
 
-        message_user2 = input(f"Usuario 2: ({language_user2} -> {language_user1}): ")
-        if language_user2 != language_user1:
-            translated_message = translator.translate(message_user2, dest=language_user1)
-            print(f"Mensaje traducido al usuario 1: {translated_message.text}")
+        message_user2 = input(f"Usuario 2: ({user2_language} -> {user1_language}): ")
+        if user2_language != user1_language:
+            translated_message = translate(message_user2, to_language=user1_language)
+            print(f"Mensaje traducido al usuario 1: {translated_message}")
         else:
             print("Usuario 1: " + message_user2)
-
-if __name__ == "__chat__":
-    chat()

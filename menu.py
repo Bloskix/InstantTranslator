@@ -6,27 +6,25 @@ from constants import *
 clear_screen()
 
 translator = Translator()
-client = input("¡Bienvenido a Instant Translator!\nIngresa tu nombre para continuar: ")
-client_lang = input(f"¿Qué idioma hablas? (es/en/fr/de): ") #TODO: Que cada usuario tenga un idioma diferente y probar con otros idiomas menos comúnes.
+username = input("¡Bienvenido a Instant Translator!\nIngresa tu nombre para continuar: ")
+user1_language = ""
+user2_language = ""
 
 clear_screen()
 
 def display_menu():
-    print(f"\nBienvenido {CYAN}{client}{RESET}, selecciona una opción: ") #TODO: Mejorar la estética, facilitar la experiencia de usuario.
+    print(f"\nBienvenido {CYAN}{username}{RESET}, selecciona una opción: ") #TODO: Mejorar la estética, facilitar la experiencia de usuario.
     print("=================================")
-    print("1. Establecer idioma para Usuario 1")
-    print("2. Establecer idioma para Usuario 2")
+    print("1. Seleccionar idioma para Usuario 1")
+    print("2. Seleccionar idioma para Usuario 2")
     print("3. Iniciar chat")
     print("4. Salir")
     print("=================================")
 
 def main():
-    user1_language = "es"
-    user2_language = "en"
-
     while True:
         display_menu()
-        choice = input(f"{client}, seleccione una opción: ")
+        choice = input(f"{username}, seleccione una opción: ")
 
         if choice == "1":
             user1_language = input(f"¿Qué idioma hablas? (es/en/fr/de): ")
@@ -38,7 +36,7 @@ def main():
             print(f"Iniciando chat con idioma de Usuario 2: {user2_language}")
             sleep(2)
             clear_screen()
-            chat()
+            chat(username, user1_language, user2_language)
         elif choice == "4":
             print("Gracias por usar Instant Translator. ¡Hasta luego!")
             break
