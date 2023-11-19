@@ -16,3 +16,7 @@ def chat(username, user1_language, user2_language):
             print(f"Mensaje traducido al usuario 1: {translated_message}")
         else:
             print("Usuario 1: " + message_user2)
+
+def translate_message(message, to_language):
+    translated_message = translate(message, to_language=to_language)
+    return translated_message

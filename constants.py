@@ -1,7 +1,14 @@
+import os, subprocess
+
 # Clear screen
 def clear_screen():
-    import os
     os.system("cls")
+
+# Run server
+def run_server():
+    os.chdir(r"C:\Users\pablo\OneDrive\Escritorio\UM\Computacion\InstantTranslator")
+    subprocess.Popen(["start", "cmd", "/k", r"py server.py"], shell=True)
+    print ("Servidor ejecutado correctamente.")
 
 # Colors
 RED = "\033[31m"
@@ -11,3 +18,6 @@ BLUE = "\033[34m"
 MAGENTA = "\033[35m"
 CYAN = "\033[36m"
 RESET = "\033[0m"
+
+# Languages
+LANGUAGES = ["es", "en", "fr", "de"]

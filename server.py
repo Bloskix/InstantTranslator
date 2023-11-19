@@ -1,44 +1,67 @@
-import socket, threading
+import socket, threading, os, subprocess
+from translator import translate_message
+
 
 host = "127.0.0.1"
 port = 8080
 
-import socket
-import threading
-
-host = "127.0.0.1"
-port = 6666
-
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-print("Socket creado")
 sock.bind((host, port))
-print("Socket vinculado")
-sock.listen(2)
-print("Socket ahora escuchando")
+sock.listen()
 
-clients = {}
+clients = []
+userNames = []
+userLanguages = []
 
-def worker(*args):
-    conn = args[0]
-    addr = args[1]
-    try:
-        print('Conexión con {}.'.format(addr))
-        conn.send("Servidor: Hola cliente".encode('UTF-8'))
-        id_clients = threading.current_thread().getName() # Obtiene el nombre del hilo actual
-        clients[id_clients] = conn # Agrega el socket conectado a la lista de clientes
-        while True:
-            data = conn.recv(4096)
-            if data:
-                print('Recibido de {}: {}'.format(id_clients, data.decode('utf-8')))
-                for id_clients_destino, cliente_destino in clients.items():
-                    if id_clients_destino != id_clients: # No envía el mensaje al cliente que lo envió
-                        cliente_destino.send(data)
-            else:
-                print("Prueba")
-                break
-    finally:
-        conn.close()
+#Esta funcion envia el mensaje a todos los usuarios conectados, excepto al que lo envia
+def broadcast(message, _client):
+    for client in clients:
+        if client != _client:
+            message = translate_message(message.decode('utf-8'), userLanguages[clients.index(client)]).encode('utf-8')
+            client.send(message)
+        
+#Esta funcion maneja los mensajes de los usuarios
+def handle_messages(client):
+    while True:
+        try:
+            message = client.recv(1024)
+            broadcast(message, client)
+        except:
+            index = clients.index(client) #.index() devuelve el indice de un elemento en una lista
+            userName = userNames[index]
+            userLanguage = userLanguages[index]
+            broadcast(f'{userName} left the chat'.encode('utf-8'), client)
+            clients.remove(client)
+            userNames.remove(userName)
+            userLanguages.remove(userLanguage)
 
-while 1:
-    conn, addr = sock.accept()
-    threading.Thread(target=worker, args=(conn, addr), name=str(threading.active_count())).start() # Crea un nuevo hilo para manejar la conexión
+            client.close()
+            break
+
+#Esta funcion recibe las conexiones de los usuarios
+def recive_connections():
+    while True:
+        client, address = sock.accept()
+
+        client.send('USER'.encode('utf-8'))
+        userName = client.recv(1024).decode('utf-8')
+        client.send('LANG'.encode('utf-8'))
+        userLanguage = client.recv(1024).decode('utf-8')
+
+#toma el nombre del usuario y el lenguaje y los agrega a las listas de usuarios conectados
+        clients.append(client)
+        userNames.append(userName)
+        userLanguages.append(userLanguage)
+
+        print(f'{userName}, language {userLanguage} connected with {str(address)}')
+
+        message = f'{userName} joined the chat'.encode('utf-8')
+        broadcast(message, client)
+        client.send('Connected to the server'.encode('utf-8'))
+
+        thread = threading.Thread(target=handle_messages, args=(client,))
+        thread.start()
+
+recive_connections()    
+       
+
