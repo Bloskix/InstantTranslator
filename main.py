@@ -1,9 +1,7 @@
 from mtranslate import translate
 from time import sleep
-from translator import chat
 from constants import *
 from client import *
-import langdetect
 
 clear_screen()
 
@@ -67,3 +65,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

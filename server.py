@@ -1,4 +1,4 @@
-import socket, threading, os, subprocess
+import socket, threading
 from translator import translate_message
 
 
@@ -21,13 +21,14 @@ def broadcast(message, _client):
             client.send(message)
         
 #Esta funcion maneja los mensajes de los usuarios
+#TODO Cambiar esta fucnion para que funcione con asyncio
 def handle_messages(client):
-    while True:
+    while True: 
         try:
             message = client.recv(1024)
             broadcast(message, client)
         except:
-            index = clients.index(client) #.index() devuelve el indice de un elemento en una lista
+            index = clients.index(client) 
             userName = userNames[index]
             userLanguage = userLanguages[index]
             broadcast(f'{userName} left the chat'.encode('utf-8'), client)
@@ -39,8 +40,9 @@ def handle_messages(client):
             break
 
 #Esta funcion recibe las conexiones de los usuarios
+#TODO Cambiar esta fucnion para que funcione con asyncio
 def recive_connections():
-    while True:
+    while True: 
         client, address = sock.accept()
 
         client.send('USER'.encode('utf-8'))

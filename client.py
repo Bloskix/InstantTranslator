@@ -1,7 +1,7 @@
 import socket, threading
 from mtranslate import translate
 
-def run_client(userName, userLanguage):
+def run_client(userName, userLanguage): #Probar cambiar a asyncio
     host = '127.0.0.1'
     port = 8080
 
@@ -26,7 +26,7 @@ def run_client(userName, userLanguage):
     def write_messages():
         while True:
             message = f'{userName}: {input("")}'
-            if message == f'{userName}: {translate("EXIT", to_language=userLanguage)}':
+            if message == f'{userName}: {translate("EXIT", to_language=userLanguage)}': #Crear una funcion con to_language=userLanguage
                 client.close()
                 break
             else:
@@ -38,6 +38,3 @@ def run_client(userName, userLanguage):
     write_thread = threading.Thread(target=write_messages)
     write_thread.start()
 
-def on_press(event):
-    if event.name == 'q' and event.ctrl:
-        return True
