@@ -1,4 +1,5 @@
 import socket, threading
+from time import sleep
 from mtranslate import translate
 
 def run_client(userName, userLanguage): #Probar cambiar a asyncio
@@ -6,7 +7,12 @@ def run_client(userName, userLanguage): #Probar cambiar a asyncio
     port = 8080
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((host, port))
+    try:
+        client.connect((host, port))
+    except socket.error as e:
+        print('No se pudo conectar al servidor. \nVolviendo al menú principal.')
+        sleep(2)
+        return False
 
     def recive_messages():
         while True:
@@ -37,4 +43,5 @@ def run_client(userName, userLanguage): #Probar cambiar a asyncio
 
     write_thread = threading.Thread(target=write_messages)
     write_thread.start()
-
+    
+    return True

@@ -37,12 +37,13 @@ def main():
         if choice == "1":
             clear_screen()
             run_server()
-            run_client(userName, userLanguage)
+            if not run_client(userName, userLanguage):
+                continue
             break
-
         elif choice == "2":
             clear_screen()
-            run_client(userName, userLanguage)
+            if not run_client(userName, userLanguage):
+                continue
             break
 
         elif choice == "3":

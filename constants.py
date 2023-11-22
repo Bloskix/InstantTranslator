@@ -6,9 +6,16 @@ def clear_screen():
 
 # Run server
 def run_server():
-    os.chdir(r"C:\Users\pablo\OneDrive\Escritorio\UM\Computacion\InstantTranslator")
-    subprocess.Popen(["start", "cmd", "/k", r"py server.py"], shell=True)
-    print ("Servidor ejecutado correctamente.")
+    os.chdir(r".")
+    try:
+        subprocess.Popen(["start", "cmd", "/k", "python3 server.py"], shell=True)
+        print("Servidor ejecutado correctamente.")
+    except FileNotFoundError:
+        try:
+            subprocess.Popen(["start", "cmd", "/k", "py server.py"], shell=True)
+            print("Servidor ejecutado correctamente.")
+        except FileNotFoundError:
+            print("No se pudo ejecutar el servidor.")
 
 # Colors
 RED = "\033[31m"

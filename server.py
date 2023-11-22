@@ -55,7 +55,7 @@ def recive_connections():
         userNames.append(userName)
         userLanguages.append(userLanguage)
 
-        print(f'{userName}, language {userLanguage} connected with {str(address)}')
+        print(f'{userName}, language: "{userLanguage}" connected with {str(address)}')
 
         message = f'{userName} joined the chat'.encode('utf-8')
         broadcast(message, client)
