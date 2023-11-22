@@ -1,4 +1,4 @@
-import socket, threading
+import socket, threading, asyncio, os
 from translator import translate_message
 
 
@@ -12,6 +12,10 @@ sock.listen()
 clients = []
 userNames = []
 userLanguages = []
+usersConnected = True
+if not usersConnected:
+    print("Server closed")
+    os._exit(0)
 
 
 # Esta funcion envia el mensaje a todos los usuarios conectados, excepto al que lo envia
@@ -33,7 +37,7 @@ def handle_messages(client):
             message = client.recv(1024)
             broadcast(message, client)
         except:
-            index = clients.index(client)
+            index = clients.index(client) 
             userName = userNames[index]
             userLanguage = userLanguages[index]
             broadcast(f"{userName} left the chat".encode("utf-8"), client)
@@ -42,20 +46,41 @@ def handle_messages(client):
             userLanguages.remove(userLanguage)
 
             client.close()
+            if index == 0:
+                print("Server closed")
+                global usersConnected
+                usersConnected = False
             break
+
+# async def handle_messages(client):
+#     while True:
+#         try:
+#             message = await asyncio.to_thread(client.recv, 1024)
+#             broadcast(message, client)
+#         except:
+#             index = clients.index(client)
+#             userName = userNames[index]
+#             userLanguage = userLanguages[index]
+#             broadcast(f"{userName} left the chat".encode("utf-8"), client)
+#             clients.remove(client)
+#             userNames.remove(userName)
+#             userLanguages.remove(userLanguage)
+
+#             client.close()
+#             break
 
 
 # Esta funcion recibe las conexiones de los usuarios
 
 
-def receive_connections():
+async def receive_connections():
     while True:
-        client, address = sock.accept()
+        client, address = await asyncio.to_thread(sock.accept)
 
         client.send("USER".encode("utf-8"))
-        userName = client.recv(1024).decode("utf-8")
+        userName = (await asyncio.to_thread(client.recv, 1024)).decode("utf-8")
         client.send("LANG".encode("utf-8"))
-        userLanguage = client.recv(1024).decode("utf-8")
+        userLanguage = (await asyncio.to_thread(client.recv, 1024)).decode("utf-8")
 
         # Toma el nombre del usuario y el lenguaje y los agrega a las listas de usuarios conectados
         clients.append(client)
@@ -73,5 +98,4 @@ def receive_connections():
         thread = threading.Thread(target=handle_messages, args=(client,))
         thread.start()
 
-
-receive_connections()
+asyncio.run(receive_connections())

@@ -36,7 +36,7 @@ def run_client(userName, userLanguage):
     def write_messages():
         while True:
             writedMessage = input(f"{GREEN}")
-            if writedMessage == translate("EXIT", to_language=userLanguage):
+            if writedMessage == translate("QQ", to_language=userLanguage):
                 client.close()
                 break
             else:

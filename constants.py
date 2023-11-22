@@ -9,15 +9,17 @@ def clear_screen():
 # Run server
 def run_server():
     os.chdir(r".")
-    try:
-        subprocess.Popen(["start", "cmd", "/k", "python3 server.py"], shell=True)
-        print("Servidor ejecutado correctamente.")
-    except FileNotFoundError:
-        try:
-            subprocess.Popen(["start", "cmd", "/k", "py server.py"], shell=True)
-            print("Servidor ejecutado correctamente.")
-        except FileNotFoundError:
-            print("No se pudo ejecutar el servidor.")
+    subprocess.Popen(["start", "cmd", "/k", "py server.py"], shell=True)
+    print("Servidor ejecutado correctamente.")
+    # try:
+    #     subprocess.Popen(["start", "cmd", "/k", "python3 server.py"], shell=True)
+    #     print("Servidor ejecutado correctamente.")
+    # except Exception:
+    #     try:
+    #         subprocess.Popen(["start", "cmd", "/k", "py server.py"], shell=True)
+    #         print("Servidor ejecutado correctamente.")
+    #     except FileNotFoundError:
+    #         print("No se pudo ejecutar el servidor.")
 
 
 # Colors
