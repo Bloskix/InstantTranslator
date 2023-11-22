@@ -1,8 +1,10 @@
 import os, subprocess
 
+
 # Clear screen
 def clear_screen():
     os.system("cls")
+
 
 # Run server
 def run_server():
@@ -16,6 +18,7 @@ def run_server():
             print("Servidor ejecutado correctamente.")
         except FileNotFoundError:
             print("No se pudo ejecutar el servidor.")
+
 
 # Colors
 RED = "\033[31m"

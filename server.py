@@ -13,25 +13,30 @@ clients = []
 userNames = []
 userLanguages = []
 
-#Esta funcion envia el mensaje a todos los usuarios conectados, excepto al que lo envia
+
+# Esta funcion envia el mensaje a todos los usuarios conectados, excepto al que lo envia
 def broadcast(message, _client):
     for client in clients:
         if client != _client:
-            message = translate_message(message.decode('utf-8'), userLanguages[clients.index(client)]).encode('utf-8')
+            message = translate_message(
+                message.decode("utf-8"), userLanguages[clients.index(client)]
+            ).encode("utf-8")
             client.send(message)
-        
-#Esta funcion maneja los mensajes de los usuarios
-#TODO Cambiar esta fucnion para que funcione con asyncio
+
+
+# Esta funcion maneja los mensajes de los usuarios
+
+
 def handle_messages(client):
-    while True: 
+    while True:
         try:
             message = client.recv(1024)
             broadcast(message, client)
         except:
-            index = clients.index(client) 
+            index = clients.index(client)
             userName = userNames[index]
             userLanguage = userLanguages[index]
-            broadcast(f'{userName} left the chat'.encode('utf-8'), client)
+            broadcast(f"{userName} left the chat".encode("utf-8"), client)
             clients.remove(client)
             userNames.remove(userName)
             userLanguages.remove(userLanguage)
@@ -39,29 +44,34 @@ def handle_messages(client):
             client.close()
             break
 
-#Esta funcion recibe las conexiones de los usuarios
-#TODO Cambiar esta fucnion para que funcione con asyncio
+
+# Esta funcion recibe las conexiones de los usuarios
+
+
 def receive_connections():
-    while True: 
+    while True:
         client, address = sock.accept()
 
-        client.send('USER'.encode('utf-8'))
-        userName = client.recv(1024).decode('utf-8')
-        client.send('LANG'.encode('utf-8'))
-        userLanguage = client.recv(1024).decode('utf-8')
+        client.send("USER".encode("utf-8"))
+        userName = client.recv(1024).decode("utf-8")
+        client.send("LANG".encode("utf-8"))
+        userLanguage = client.recv(1024).decode("utf-8")
 
-#toma el nombre del usuario y el lenguaje y los agrega a las listas de usuarios conectados
+        # Toma el nombre del usuario y el lenguaje y los agrega a las listas de usuarios conectados
         clients.append(client)
         userNames.append(userName)
         userLanguages.append(userLanguage)
 
-        print(f'User: {userName}, language: "{userLanguage}" connected with {str(address)}')
+        print(
+            f'User: {userName}, language: "{userLanguage}" connected with {str(address)}'
+        )
 
-        message = f'{userName} joined the chat'.encode('utf-8')
+        message = f"{userName} joined the chat".encode("utf-8")
         broadcast(message, client)
-        client.send('Connected to the server'.encode('utf-8'))
+        client.send("Connected to the server".encode("utf-8"))
 
         thread = threading.Thread(target=handle_messages, args=(client,))
         thread.start()
+
 
 receive_connections()
