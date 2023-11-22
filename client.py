@@ -14,7 +14,7 @@ def run_client(userName, userLanguage): #Probar cambiar a asyncio
         sleep(2)
         return False
 
-    def recive_messages():
+    def receive_messages():
         while True:
             try:
                 message = client.recv(1024).decode('utf-8')
@@ -38,7 +38,7 @@ def run_client(userName, userLanguage): #Probar cambiar a asyncio
             else:
                 client.send(message.encode('utf-8'))
 
-    recive_thread = threading.Thread(target=recive_messages)
+    recive_thread = threading.Thread(target=receive_messages)
     recive_thread.start()
 
     write_thread = threading.Thread(target=write_messages)

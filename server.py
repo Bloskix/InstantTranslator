@@ -41,7 +41,7 @@ def handle_messages(client):
 
 #Esta funcion recibe las conexiones de los usuarios
 #TODO Cambiar esta fucnion para que funcione con asyncio
-def recive_connections():
+def receive_connections():
     while True: 
         client, address = sock.accept()
 
@@ -55,7 +55,7 @@ def recive_connections():
         userNames.append(userName)
         userLanguages.append(userLanguage)
 
-        print(f'{userName}, language: "{userLanguage}" connected with {str(address)}')
+        print(f'User: {userName}, language: "{userLanguage}" connected with {str(address)}')
 
         message = f'{userName} joined the chat'.encode('utf-8')
         broadcast(message, client)
@@ -64,6 +64,4 @@ def recive_connections():
         thread = threading.Thread(target=handle_messages, args=(client,))
         thread.start()
 
-recive_connections()    
-       
-
+receive_connections()

@@ -22,13 +22,15 @@ def main():
             "\n1. Crear sala de chat"
             "\n2. Unirse a sala de chat"
             "\n3. Cambiar idioma"
-            "\n4. Salir"
+            f"\n{RED}4. Salir{RESET}"
             "\n=================================")
     
+            colors = [CYAN, YELLOW, RED, RESET]
             translatedMenu = translate(defaultMenu, to_language=userLanguage)
-            translatedMenu = translatedMenu.replace(f"{translate(CYAN, to_language=userLanguage)}", CYAN)
-            translatedMenu = translatedMenu.replace(f"{translate(RESET, to_language=userLanguage)}", RESET)
-            translatedMenu = translatedMenu.replace(f"{translate(YELLOW, to_language=userLanguage)}", YELLOW)
+
+            for color in colors:
+                translatedMenu = translatedMenu.replace(translate(color, to_language=userLanguage), color)
+
             print(translatedMenu)
             
         display_menu()
