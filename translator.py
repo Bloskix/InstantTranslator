@@ -1,5 +1,4 @@
 from mtranslate import translate
-from constants import *
 
 
 def translate_message(message, to_language):
