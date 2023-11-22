@@ -3,9 +3,8 @@ from time import sleep
 from constants import *
 from client import *
 
-clear_screen()
-
 def main():
+    clear_screen()
     userLanguage = input(f"Welcome to {YELLOW}Instant Translator{RESET}! What language do you speak? (es/en/fr/de):")
     while userLanguage not in LANGUAGES:
         print(f"{RED}Invalid language. Please, enter a valid language.{RESET}")

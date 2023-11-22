@@ -1,6 +1,8 @@
 import socket, threading
+from main import main
 from time import sleep
 from mtranslate import translate
+from constants import *
 
 def run_client(userName, userLanguage): #Probar cambiar a asyncio
     host = '127.0.0.1'
@@ -14,32 +16,33 @@ def run_client(userName, userLanguage): #Probar cambiar a asyncio
         sleep(2)
         return False
 
-    def receive_messages():
+    def receive_messages(): 
         while True:
             try:
-                message = client.recv(1024).decode('utf-8')
-                if message == 'USER':
+                receivedMessage = client.recv(1024).decode('utf-8')
+                if receivedMessage == 'USER':
                     client.send(userName.encode('utf-8'))
-                elif message == 'LANG':
+                elif receivedMessage == 'LANG':
                     client.send(userLanguage.encode('utf-8'))
                 else:
-                    print(message)
+                    print(f"\n{RESET}{receivedMessage}{GREEN}\n")
             except:
                 print('An error ocurred!')
+                main()
                 client.close()
                 break
 
     def write_messages():
         while True:
-            message = f'{userName}: {input("")}'
-            if message == f'{userName}: {translate("EXIT", to_language=userLanguage)}': #Crear una funcion con to_language=userLanguage
+            writedMessage = input(f"{GREEN}")
+            if writedMessage == translate("EXIT", to_language=userLanguage):
                 client.close()
                 break
             else:
-                client.send(message.encode('utf-8'))
+                client.send((f"{userName}: {writedMessage}").encode('utf-8'))
 
-    recive_thread = threading.Thread(target=receive_messages)
-    recive_thread.start()
+    receive_thread = threading.Thread(target=receive_messages)
+    receive_thread.start()
 
     write_thread = threading.Thread(target=write_messages)
     write_thread.start()
